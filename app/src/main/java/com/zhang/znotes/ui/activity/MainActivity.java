@@ -284,8 +284,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     private void getNotes() {
         mList.clear();
         mList = DataSupport.select("date", "content", "time", "objectId").order("date desc").find(NotesBean.class);
-        LogUtil("集合size=" + mList.size());
-        LogUtil("集合size=" + mList.toString());
     }
 
 
