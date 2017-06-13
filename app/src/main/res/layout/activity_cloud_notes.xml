@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.zhang.znotes.ui.activity.CloudNotesActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_layout"
+        />
+
+    <RelativeLayout
+        style="@style/CommonMar"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/search_et"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/edittext_shape"
+        android:cursorVisible="false"
+        android:gravity="center"
+        android:hint="@string/textview_hint"
+        android:textColor="@color/color_333333"
+        android:textSize="12sp"
+         />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/margin_8"
+        android:id="@+id/search_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_et" />
+    </RelativeLayout>
+
+
+    <include layout="@layout/layout_all_choose"/>
+
+
+</RelativeLayout>

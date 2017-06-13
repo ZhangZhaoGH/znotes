@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="status_bar_height">25dp</dimen>
+    <dimen name="toolBarHeight">75dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

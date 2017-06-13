@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:id="@+id/choose_title_rl"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:background="@color/color_blue"
+        android:layout_width="match_parent"
+        android:layout_height="85dp">
+
+        <ImageView
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:id="@+id/cancle_title"
+            android:src="@mipmap/back"
+            android:layout_width="44dp"
+            android:layout_height="44dp" />
+
+
+
+        <TextView
+            android:id="@+id/check_title"
+            android:text="已选择 0 项"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:id="@+id/all_choose_iv"
+            android:src="@mipmap/no_all_choose"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="44dp"
+            android:layout_height="44dp" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:id="@+id/commit_ll"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_blue"
+        android:layout_width="match_parent"
+        android:layout_height="54dp">
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:visibility="gone"
+            android:padding="10dp"
+            android:id="@+id/upload_iv"
+            android:src="@mipmap/update"
+            android:layout_width="44dp"
+            android:layout_height="44dp" />
+
+
+        <ImageView
+            android:padding="10dp"
+            android:id="@+id/commit_iv"
+            android:src="@mipmap/recycle_bin"
+            android:layout_width="44dp"
+            android:layout_height="44dp" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+</merge>

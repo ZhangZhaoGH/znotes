@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zhang.znotes">
+
+    <!-- 允许联网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 获取GSM（2g）、WCDMA（联通3g）等网络状态的信息 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 获取wifi网络状态的信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 获取sd卡写的权限，用于文件上传和下载 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 允许读取手机状态 用于创建BmobInstallation -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo521"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- oneKeyShare -->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <data android:scheme="tencent100371282" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 调用新浪原生SDK，需要注册的回调activity -->
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 集成line客户端登录授权，需要添如下格式的过滤器 -->
+            <intent-filter>
+                <data android:scheme="line.1477692153" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!-- 微信分享回调 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- 阿里热修复相关 -->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="103228-1" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="9ec2293d21d8198f1e5a160378a039be" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCgWLgU6Hwsq0x/EY1wUFBhb4fXe9vo0Udj3Nd5ikdDubWSJsAjr1bYSrdU8h/HZp062bj8TyldfAXS8Yn5Gbe4dZBDoknV7mltFnpeZbnDT5ZN47ZsTpNeelagVKV8UJn5UVZa3nVClHVODE6vsuwjrbnEoLVUVV59IdW2yTwzej5JcfyXBOz7iBuYJi2/1HeBYW4yyyTtfPTgtJe9HVjw4tBA/OAyT8nDBoatG6h+EBRH2rQfy3BFoFY2fDW5DGWvIRdQtdF1R5I2t3WDTcTXIEvMtGdmppWlQdH1cS7rqekHVmA/fn2vKtMovk/ss2ifrqlV5LPf/0g9V4TkUFlVAgMBAAECggEAP9kT879fMqpDG5Xxq/dPCn1Oqg830c0DkFAvvMXC+sTH+BpWB9+ZxSZ7Oefvn4bMtNJdRpp+7iqkZwqm1fnXniux9jx5CiaU9EsvDseS4KKgRwOVcCsZo1UziUQrYQT3Sr+Ik0ZhitFypFFiQ7QLM2nJvvH/QkV8Cneekdovjo9NGawpOT1C2i2LZ/NIRns0c+rvHmH4TPF5jusAuO3MB0dFHN+jHcLeIQS1lY9XrT7HRHKOjHSYOWMyrlH2V0Vnt5qvwISxSfiBkAUCqPd9nu0Zt3fWQv7WK88Ox3aHXBQ/sk713J/n2WFimZ73aONUcibnyPiuascGhI9+6EZgAQKBgQDT/OWK0OUsyzewyLxr6N1wmC6MHp7AOSio0OZaFugGX7AcBYWBD6BGD2jTqePyWxliFI+U3wryNq1C/c1Ytv3o23c7M1Y14ZXhHA9uGjK7NlNokl1WM9pGst/HJdU/l4okwIjAhiQ7EhLNI1YYd8/xIDthogv17H5Zym2UFrv21QKBgQDBoxldeSaJzta4IxXILeLUOMhvaErvT08NvsUkBsCnRnQIyuFRqZyQEDGlkgB9MaeLZl2dJMhLYWXZwnKLnNwdHHgIHDss7xrl6mfOdE6cyurIL6bTF+h4l+xgSiRX/p/i+egR4GD3Lqk//Op7f+1hoHUQ7NFzDD/wD9BSgyEYgQKBgC78eOxBzOoWyOs4MvtADATu1jJcfxdgE/EHDGefeCIhh2lOl/65Ne8Rb0yq9Uk8g+3HXOPEZCq3j8OveZpWRQUdz9mhUVR0AcJ5c7oVuHTiX65n8qQurgzJjOwZKKEFt6rZufXiRZmKMfyh/m1B8Sci28aSIlCJ8J96TLtsJpFZAoGAeIBXOKQ8J2ZgmRa8Z2am0grEMRBmEab5O0SMym6pVW+ypgYbUgaLN9vcCX1icIaGDWoWt8Q8ISzrhShMwDVNhZBB4kovSTdDNfE5yHD4uvpMQWfmGVe3g9SHdSSumVQLi+SZVwabUTfoe7mY8mIaB7cjIvU9Iqts3qf4rGCOKAECgYEAoLcgDo5gDYv//04iAVSJUYfZIMWm4/s9iNf/6hb4N/b7JuWy44aAJ/lbkb4vnJpynIG6lkwuzFM+4ka1d9kLoobXONzybPzizJKt9l7GMCTPkfyBMdbsIdOCBgO8TU8jQHq0BBNaiwY8QBtSFDbsXgdCtXJ7vdhsJHWVMLQn8Ps=" />
+
+        <activity
+            android:name=".ui.activity.CreatNoteActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.activity.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".ui.activity.RegisterActivity" />
+        <activity android:name=".ui.activity.UserInfoActivity" />
+        <activity android:name=".ui.activity.CloudNotesActivity" />
+        <activity android:name=".ui.activity.RecycleBinActivity" />
+        <activity android:name=".ui.activity.GetPasswordActivity" />
+        <activity android:name=".ui.activity.SettingActivity" />
+        <activity android:name=".ui.activity.UpdatePasswordActivity" />
+        <activity android:name=".ui.activity.FeedBackActivity" />
+    </application>
+
+</manifest>

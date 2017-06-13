@@ -1,0 +1,60 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.3"
+    defaultConfig {
+        applicationId "com.zhang.znotes"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+    }
+}
+repositories {
+    maven {
+        url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+    }
+    mavenCentral()
+    jcenter()
+}
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.afollestad.material-dialogs:core:0.9.4.4'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'org.litepal.android:core:1.4.1'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.alibaba:fastjson:1.2.28'
+    compile 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.android.support:design:24.3.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'cn.bmob.android:bmob-sdk:3.5.0'
+    compile 'cn.bmob.android:http-legacy:1.0'
+    compile 'com.taobao.android:alisdk-hotfix:2.0.6'
+    testCompile 'junit:junit:4.12'
+    compile 'skin.support:skin-support:1.2.6'
+    compile 'skin.support:skin-support-design:1.2.3'
+
+}
