@@ -90,7 +90,6 @@ public class ScrollingActivity extends BaseActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mList = new ArrayList<>();
         mList = DataSupport.select("date", "content", "time").order("date desc").find(NotesBean.class);
-        LogUtil(mList.size() + "=size");
         if (menuAdapter == null) {
             menuAdapter = new SwipeMenuAdapter(this,1);
             menuAdapter.setDataList(mList);
