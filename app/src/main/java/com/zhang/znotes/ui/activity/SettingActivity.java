@@ -1,6 +1,8 @@
 package com.zhang.znotes.ui.activity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,7 +10,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.mingle.widget.ShapeLoadingDialog;
 import com.zhang.znotes.R;
@@ -17,6 +26,7 @@ import com.zhang.znotes.bean.bmob.NoteBmob;
 import com.zhang.znotes.ui.adapter.SettingAdapter;
 import com.zhang.znotes.ui.view.DividerItemDecoration;
 import com.zhang.znotes.utils.CommonUtil;
+import com.zhang.znotes.utils.SPUtils;
 import com.zhang.znotes.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -31,7 +41,6 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 public class SettingActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private Context mContext;
-    private Toolbar mToolbar;
     private List<String> mList;
     private SettingAdapter adapter;
 
@@ -43,28 +52,28 @@ public class SettingActivity extends BaseActivity {
 
     private void initData() {
 //        mList.add("主题");
-//        mList.add("字体");
+        mList.add("输入字体");
         mList.add("意见反馈");
         mList.add("检查更新");
         mList.add("删除确认提示");
 //        mList.add("推荐ZNotes");
-        if (adapter==null){
-            adapter=new SettingAdapter(this);
+        if (adapter == null) {
+            adapter = new SettingAdapter(this);
             adapter.setDataList(mList);
             mRecyclerView.setAdapter(adapter);
             adapter.setmOnItemClickListener(new SettingAdapter.onItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
 
-                    switch (position){
+                    switch (position) {
                         case 0:
-                            startActivity(FeedBackActivity.class);
+                            showPop();
                             break;
                         case 1:
-                            getUpdateVersion();
-
+                            startActivity(FeedBackActivity.class);
                             break;
                         case 2:
+                            getUpdateVersion();
                             break;
                         default:
                             break;
@@ -75,30 +84,102 @@ public class SettingActivity extends BaseActivity {
                 public void onItemLongClick(View view, int position) {
                 }
             });
-        }else {
+        } else {
             adapter.notifyDataSetChanged();
         }
 
     }
 
+    /**
+     * 修改字体 自定义弹窗
+     */
+    private void showPop() {
+        LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup menuView = (ViewGroup) mLayoutInflater.inflate(
+                R.layout.view_font_size_pop, null, true);
+        final PopupWindow pw = new PopupWindow(menuView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        backgroundAlpha(0.5f);
+        pw.setOutsideTouchable(false); // 设置是否允许在外点击使其消失，到底有用没？
+        pw.showAtLocation(menuView, Gravity.CENTER, 0, 0);
+        pw.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1f);
+            }
+        });
+
+        LinearLayout max = (LinearLayout) menuView.findViewById(R.id.ll_size_max);
+        max.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                SPUtils.put(mContext, "editSize", 22);
+                ToastUtils.showToast("设置成功");
+                pw.dismiss();
+            }
+
+        });
+        LinearLayout big = (LinearLayout) menuView.findViewById(R.id.ll_size_big);
+        big.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                SPUtils.put(mContext, "editSize", 18);
+                ToastUtils.showToast("设置成功");
+                pw.dismiss();
+            }
+
+        });
+        LinearLayout normal = (LinearLayout) menuView.findViewById(R.id.ll_size_normal);
+        normal.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                SPUtils.put(mContext, "editSize", 16);
+                ToastUtils.showToast("设置成功");
+                pw.dismiss();
+            }
+
+        });
+        LinearLayout small = (LinearLayout) menuView.findViewById(R.id.ll_size_small);
+        small.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                SPUtils.put(mContext, "editSize", 14);
+                ToastUtils.showToast("设置成功");
+                pw.dismiss();
+            }
+
+        });
+
+    }
+
+    /**
+     * 设置添加屏幕的背景透明度
+     */
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        getWindow().setAttributes(lp);
+    }
+
     private void getUpdateVersion() {
         BmobQuery<NoteBmob> query = new BmobQuery<NoteBmob>();
-        final String versionCode=CommonUtil.getVersionCode(mContext);
-        final String versionName=CommonUtil.getVersionName(mContext);
+        final String versionCode = CommonUtil.getVersionCode(mContext);
+        final String versionName = CommonUtil.getVersionName(mContext);
         query.getObject("a36f5aa8a3", new QueryListener<NoteBmob>() {
 
             @Override
             public void done(NoteBmob object, BmobException e) {
-                if(e==null){
-                    String versionCodeOnLine=object.getContent();
-                    if (versionCode.equals(versionCodeOnLine)){
-                        ToastUtils.showToast("您当前的版本是"+versionName+" ,已经是最新版");
-                    }else {
-                        ToastUtils.showToast("您当前的版本是"+versionName+" ,为了更好的用户体验，请您更新最新版");
+                if (e == null) {
+                    String versionCodeOnLine = object.getContent();
+                    if (versionCode.equals(versionCodeOnLine)) {
+                        ToastUtils.showToast("您当前的版本是" + versionName + " ,已经是最新版");
+                    } else {
+                        ToastUtils.showToast("您当前的版本是" + versionName + " ,为了更好的用户体验，请您更新最新版");
                     }
-                }else{
-                    ToastUtils.showToast("您当前的版本是"+versionName);
-                    LogUtil("失败："+e.getMessage()+","+e.getErrorCode());
+                } else {
+                    ToastUtils.showToast("您当前的版本是" + versionName);
+                    LogUtil("失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
             }
 
@@ -123,9 +204,9 @@ public class SettingActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         ShareSDK.initSDK(this);
-        mContext=this;
-        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        mToolbar.setBackgroundColor(ContextCompat.getColor(mContext,R.color.title_bg));
+        mContext = this;
+        Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        mToolbar.setBackgroundColor(ContextCompat.getColor(mContext, R.color.title_bg));
         mToolbar.setTitle(getResources().getString(R.string.setting_title));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -134,11 +215,11 @@ public class SettingActivity extends BaseActivity {
                 finish();
             }
         });
-        mRecyclerView= (RecyclerView) view.findViewById(R.id.setting_recyclerview);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.setting_recyclerview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mList=new ArrayList<>();
+        mList = new ArrayList<>();
     }
 
     @Override

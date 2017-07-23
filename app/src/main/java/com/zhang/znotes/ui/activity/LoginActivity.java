@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.mingle.widget.ShapeLoadingDialog;
 import com.zhang.znotes.R;
 import com.zhang.znotes.base.BaseActivity;
-import com.zhang.znotes.bean.bmob.MyUser;
 import com.zhang.znotes.presenter.impl.LoginPresenterImpl;
 import com.zhang.znotes.service.UpdateInfoEvent;
 import com.zhang.znotes.utils.KeyBoardUtils;
@@ -22,10 +20,6 @@ import com.zhang.znotes.view.ILoginView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.UpdateListener;
-
 /**
  * 2017年3月15日17:06:01 by zz
  */
@@ -33,10 +27,8 @@ public class LoginActivity extends BaseActivity implements ILoginView {
 
     private EditText mEmailView;
     private EditText mPasswordView;
-    private Toolbar mToolbar;
     private LoginPresenterImpl presenter;
     private ShapeLoadingDialog dialog;
-    private String account,password;
     private Context mContext;
 
 
@@ -66,7 +58,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
         dialog=new ShapeLoadingDialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setLoadingText(getResources().getString(R.string.loading));
-        mToolbar= (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         mToolbar.setTitle(getResources().getString(R.string.action_sign_in));
         TextView toolbar_right = (TextView) view.findViewById(R.id.toolbar_right);
         toolbar_right.setText(getResources().getString(R.string.prompt_forget_password));
@@ -97,8 +89,8 @@ public class LoginActivity extends BaseActivity implements ILoginView {
                 startActivity(GetPasswordActivity.class);
             break;
             case R.id.btn_sign_in:
-                 account=mEmailView.getText().toString();
-                 password=mPasswordView.getText().toString();
+                String account = mEmailView.getText().toString();
+                String password = mPasswordView.getText().toString();
                 if (TextUtils.isEmpty(account)){
                     ToastUtils.showToast(getResources().getString(R.string.prompt_username));
                     return;
@@ -107,7 +99,7 @@ public class LoginActivity extends BaseActivity implements ILoginView {
                     ToastUtils.showToast(getResources().getString(R.string.prompt_password));
                     return;
                 }
-                presenter.login(account,password);
+                presenter.login(account, password);
                 break;
             case R.id.btn_register:
                 startActivity(RegisterActivity.class);

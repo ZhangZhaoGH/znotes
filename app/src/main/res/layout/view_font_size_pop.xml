@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="@dimen/margin_12"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textColor="@color/color_333333"
+        android:textSize="16sp"
+        android:text="日记字号"
+        android:layout_marginBottom="@dimen/margin_12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/view_dividing_line"/>
+
+    <LinearLayout
+        android:background="@drawable/item_click_color"
+        android:id="@+id/ll_size_max"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="40dp">
+
+
+        <TextView
+            android:text="特大"
+            android:textColor="@color/color_333333"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@mipmap/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <include
+        layout="@layout/view_dividing_line"/>
+
+    <LinearLayout
+        android:background="@drawable/item_click_color"
+        android:id="@+id/ll_size_big"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="40dp">
+
+
+        <TextView
+            android:text="大"
+            android:textColor="@color/color_333333"
+            android:textSize="18sp"
+            android:id="@+id/tv_size_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@mipmap/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <include
+        layout="@layout/view_dividing_line"/>
+
+    <LinearLayout
+        android:background="@drawable/item_click_color"
+        android:id="@+id/ll_size_normal"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="40dp">
+
+
+        <TextView
+            android:text="中"
+            android:textColor="@color/color_333333"
+            android:textSize="16sp"
+            android:id="@+id/tv_size_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@mipmap/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <include
+        layout="@layout/view_dividing_line"/>
+
+    <LinearLayout
+        android:background="@drawable/item_click_color"
+        android:id="@+id/ll_size_small"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_height="40dp">
+
+
+        <TextView
+            android:text="小"
+            android:textColor="@color/color_333333"
+            android:textSize="14sp"
+            android:id="@+id/tv_size_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v4.widget.Space
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:src="@mipmap/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+    <include
+        layout="@layout/view_dividing_line"/>
+
+
+
+</LinearLayout>

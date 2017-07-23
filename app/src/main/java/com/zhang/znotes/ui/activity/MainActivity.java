@@ -214,12 +214,10 @@ public class MainActivity extends BaseActivity implements IMainView {
                         break;
                     case R.id.nav_log_out:
                         //退出
-
                         if (user == null) {
-                            ToastUtils.showToast("请先登录");
+                            ToastUtils.showToast("已经退出");
                             break;
                         }
-
                         CommonUtil.showDialog(mContext, getString(R.string.prompt_log_out), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -432,22 +430,6 @@ public class MainActivity extends BaseActivity implements IMainView {
     public void widgetClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-//                dialog = new MaterialDialog.Builder(this)
-//                        .title("提示")
-//                        .content("加载中")
-//                        .positiveText("确定")
-//                        .negativeText("取消")
-//                        .positiveColor(Color.parseColor("#00BCD4"))
-//                        .negativeColor(Color.parseColor("#ff4a57"))
-//                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                            @Override
-//                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                ToastUtils.showToast("确定的监听");
-//                            }
-//                        })
-//                        .cancelable(false)
-//                        .show();
-
                 //创建写的日记页面
                 startActivity(CreatNoteActivity.class);
                 break;

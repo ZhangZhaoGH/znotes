@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,6 +26,7 @@ import com.zhang.znotes.bean.bmob.NoteBmob;
 import com.zhang.znotes.bean.litepal.NotesBean;
 import com.zhang.znotes.utils.CommonUtil;
 import com.zhang.znotes.utils.DateKit;
+import com.zhang.znotes.utils.SPUtils;
 import com.zhang.znotes.utils.ToastUtils;
 
 import java.util.Date;
@@ -40,7 +42,7 @@ public class CreatNoteActivity extends BaseActivity {
     private Context mContext;
     private TextView creat_time;
     private EditText creat_et;
-    private NotesBean notesBean,bean;
+    private NotesBean notesBean, bean;
     private Toolbar mToolbar;
     private InputMethodManager imm;
     private ImageView syn_iv;
@@ -55,8 +57,8 @@ public class CreatNoteActivity extends BaseActivity {
 
     @Override
     public void initParms(Bundle parms) {
-        if (parms!=null){
-            bean= (NotesBean) parms.getSerializable("bean");
+        if (parms != null) {
+            bean = (NotesBean) parms.getSerializable("bean");
         }
     }
 
@@ -74,11 +76,12 @@ public class CreatNoteActivity extends BaseActivity {
     @Override
     public void initView(View view) {
         ShareSDK.initSDK(this);
-        mContext=this;
-        scorll= (ScrollView) view.findViewById(R.id.scrollView);
+        mContext = this;
+        int editSize = (int) SPUtils.get(mContext, "editSize", 16);
+        scorll = (ScrollView) view.findViewById(R.id.scrollView);
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        notesBean =new NotesBean();
-        mToolbar= (Toolbar) view.findViewById(R.id.toolbar);
+        notesBean = new NotesBean();
+        mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         mToolbar.setTitle(getResources().getString(R.string.edit));
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -89,20 +92,21 @@ public class CreatNoteActivity extends BaseActivity {
             }
         });
 
-        syn_iv= (ImageView) view.findViewById(R.id.syn_iv);
+        syn_iv = (ImageView) view.findViewById(R.id.syn_iv);
         syn_iv.setImageResource(R.mipmap.update);
         syn_iv.setOnClickListener(this);
         syn_iv.setVisibility(View.VISIBLE);
-        share= (ImageView) view.findViewById(R.id.share_iv);
+        share = (ImageView) view.findViewById(R.id.share_iv);
         share.setVisibility(View.VISIBLE);
         share.setOnClickListener(this);
-        creat_time= (TextView) view.findViewById(R.id.creat_time);
-        creat_et= (EditText) view.findViewById(R.id.creat_et);
+        creat_time = (TextView) view.findViewById(R.id.creat_time);
+        creat_et = (EditText) view.findViewById(R.id.creat_et);
+        creat_et.setTextSize(TypedValue.COMPLEX_UNIT_SP, editSize);
         animation = AnimationUtils.loadAnimation(mContext, R.anim.roraterepeat);
-        if (bean==null){
-            String time=DateKit.getCurrentTime();
+        if (bean == null) {
+            String time = DateKit.getCurrentTime();
             creat_time.setText(time);
-        }else {
+        } else {
             creat_time.setText(bean.getTime());
             creat_et.setText(bean.getContent());
             creat_et.setSelection(bean.getContent().length());
@@ -111,30 +115,29 @@ public class CreatNoteActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
-        Date date=new Date(System.currentTimeMillis());
-        String time=DateKit.getCurrentTime();
-        String content=creat_et.getText().toString();
-        if (!TextUtils.isEmpty(content)){
-            if (bean==null){
+        Date date = new Date(System.currentTimeMillis());
+        String time = DateKit.getCurrentTime();
+        String content = creat_et.getText().toString();
+        if (!TextUtils.isEmpty(content)) {
+            if (bean == null) {
                 notesBean.setDate(date);
                 notesBean.setTime(time);
                 notesBean.setContent(content);
                 notesBean.save();
             }
-            if (bean!=null){
-                if (!bean.getContent().equals(content)){
+            if (bean != null) {
+                if (!bean.getContent().equals(content)) {
                     bean.setDate(date);
                     bean.setTime(time);
                     bean.setContent(content);
-                    LogUtil("id="+bean.getId());
-                    if (bean.getId() == 0){
+                    LogUtil("id=" + bean.getId());
+                    if (bean.getId() == 0) {
                         bean.save();
                         LogUtil("save");
-                    }else {
+                    } else {
                         LogUtil("update");
                         bean.update(bean.getId());
                     }
@@ -146,13 +149,13 @@ public class CreatNoteActivity extends BaseActivity {
 
     @Override
     public void widgetClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.syn_iv:
                 synNote();
                 break;
             case R.id.share_iv:
-                String content=creat_et.getText().toString();
-                if (TextUtils.isEmpty(content)){
+                String content = creat_et.getText().toString();
+                if (TextUtils.isEmpty(content)) {
                     ToastUtils.showToast("请输入分享文本内容");
                     return;
                 }
@@ -232,54 +235,54 @@ public class CreatNoteActivity extends BaseActivity {
     private void synNote() {
 
 
-        MyUser user= BmobUser.getCurrentUser(MyUser.class);
-        if (user==null){
+        MyUser user = BmobUser.getCurrentUser(MyUser.class);
+        if (user == null) {
             CommonUtil.showLogInDialog(mContext);
             return;
         }
         syn_iv.startAnimation(animation);
         syn_iv.setImageResource(R.mipmap.syn);
-        if (bean==null){
-            syn(user,notesBean);
-        }else {
-            syn(user,bean);
+        if (bean == null) {
+            syn(user, notesBean);
+        } else {
+            syn(user, bean);
         }
     }
 
     private void syn(MyUser user, final NotesBean notesBean) {
-        NoteBmob noteBmob=new NoteBmob();
+        NoteBmob noteBmob = new NoteBmob();
         noteBmob.setContent(creat_et.getText().toString());
         noteBmob.setUserEmail(user.getEmail());
 
-        if (TextUtils.isEmpty(notesBean.getObjectId())){
+        if (TextUtils.isEmpty(notesBean.getObjectId())) {
             //添加数据
             noteBmob.save(new SaveListener<String>() {
                 @Override
                 public void done(String objectId, BmobException e) {
-                    if(e==null){
+                    if (e == null) {
                         notesBean.setObjectId(objectId);
-                        LogUtil("添加"+notesBean.toString());
-                        ToastUtils.showToast(getResources().getString(R.string.sava_success) );
-                    }else{
-                        ToastUtils.showToast(getResources().getString(R.string.sava_error)+": "+e.getMessage() );
-                        Log.e("zz","添加失败："+e.getMessage()+","+e.getErrorCode());
+                        LogUtil("添加" + notesBean.toString());
+                        ToastUtils.showToast(getResources().getString(R.string.sava_success));
+                    } else {
+                        ToastUtils.showToast(getResources().getString(R.string.sava_error) + ": " + e.getMessage());
+                        Log.e("zz", "添加失败：" + e.getMessage() + "," + e.getErrorCode());
                     }
                     animation.cancel();
                     syn_iv.setImageResource(R.mipmap.update);
 
                 }
             });
-        }else {
+        } else {
             //更新数据
             noteBmob.update(notesBean.getObjectId(), new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
-                        ToastUtils.showToast(getResources().getString(R.string.sava_success) );
-                        LogUtil("更新"+notesBean.toString());
-                    }else{
-                        ToastUtils.showToast(getResources().getString(R.string.sava_error)+": "+e.getMessage() );
-                        Log.e("zz","更新失败："+e.getMessage()+","+e.getErrorCode());
+                    if (e == null) {
+                        ToastUtils.showToast(getResources().getString(R.string.sava_success));
+                        LogUtil("更新" + notesBean.toString());
+                    } else {
+                        ToastUtils.showToast(getResources().getString(R.string.sava_error) + ": " + e.getMessage());
+                        Log.e("zz", "更新失败：" + e.getMessage() + "," + e.getErrorCode());
                     }
                     animation.cancel();
                     syn_iv.setImageResource(R.mipmap.update);
