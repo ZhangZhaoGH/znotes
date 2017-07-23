@@ -131,23 +131,9 @@ public class LoginActivity extends BaseActivity implements ILoginView {
     @Override
     public void loginSuccess(String successMessage) {
         ToastUtils.showToast(successMessage);
-        BmobUser user=BmobUser.getCurrentUser(MyUser.class);
-        MyUser myUser = new MyUser();
-        myUser.setUserPassword(password);
-        myUser.update(user.getObjectId(), new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-                if (e == null) {
-                    LogUtil("保存成功");
-                } else {
-                    LogUtil("失败:" + e.getMessage());
-                }
-                EventBus.getDefault().post(new UpdateInfoEvent());
-                startActivity(UserInfoActivity.class);
-                finish();
-            }
-        });
-
+        EventBus.getDefault().post(new UpdateInfoEvent());
+        startActivity(UserInfoActivity.class);
+        finish();
     }
 
     @Override
