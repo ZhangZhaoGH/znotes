@@ -16,8 +16,6 @@ import java.io.File;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobConfig;
-import skin.support.SkinCompatManager;
-import skin.support.design.app.SkinMaterialViewInflater;
 
 
 /**
@@ -52,19 +50,8 @@ public class MyApplication extends Application {
         exceptionHandler.init(mContext);
 
         setHotFix();
-
-        setSkin();
     }
 
-    /**
-     * 换肤初始化
-     */
-    private void setSkin() {
-        SkinCompatManager.init(this)                          // 基础控件换肤初始化
-                .addInflater(new SkinMaterialViewInflater())  // material design 控件换肤初始化[可选]
-//                .addInflater(new SkinCardViewInflater())      // CardView 控件换肤初始化[可选]
-                .loadSkin();                                  // 加载当前皮肤库(保存在SharedPreferences中)
-    }
 
 
     /**

@@ -17,9 +17,8 @@ import com.zhang.znotes.MyApplication;
 
 import java.util.Calendar;
 
-import skin.support.app.SkinCompatActivity;
 
-public abstract class BaseActivity extends SkinCompatActivity implements View.OnClickListener {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     /** 是否沉浸状态栏 **/
     private boolean isSetStatusBar = true;

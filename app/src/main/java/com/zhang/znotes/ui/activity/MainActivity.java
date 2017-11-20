@@ -2,10 +2,7 @@ package com.zhang.znotes.ui.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -24,28 +21,25 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 import com.zhang.znotes.MyApplication;
 import com.zhang.znotes.R;
+import com.zhang.znotes.base.BaseActivity;
 import com.zhang.znotes.bean.bmob.MyUser;
 import com.zhang.znotes.bean.bmob.NoteBmob;
 import com.zhang.znotes.bean.litepal.DelNotesBean;
+import com.zhang.znotes.bean.litepal.NotesBean;
 import com.zhang.znotes.presenter.impl.MainPresenterImpl;
 import com.zhang.znotes.service.UpdateInfoEvent;
-import com.zhang.znotes.ui.view.DividerItemDecoration;
 import com.zhang.znotes.ui.adapter.SwipeMenuAdapter;
-import com.zhang.znotes.base.BaseActivity;
-import com.zhang.znotes.bean.litepal.NotesBean;
+import com.zhang.znotes.ui.view.DividerItemDecoration;
 import com.zhang.znotes.utils.CommonUtil;
 import com.zhang.znotes.utils.SPUtils;
 import com.zhang.znotes.utils.ToastUtils;
@@ -60,10 +54,7 @@ import java.util.List;
 
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
-import cn.sharesdk.framework.ShareSDK;
 import de.hdodenhof.circleimageview.CircleImageView;
-import skin.support.SkinCompatManager;
-import skin.support.utils.SkinPreference;
 
 public class MainActivity extends BaseActivity implements IMainView {
     private Context mContext;
