@@ -1,5 +1,6 @@
 package com.zhang.znotes.ui.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +10,17 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +43,10 @@ import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 
 public class CreatNoteActivity extends BaseActivity {
     private Context mContext;
@@ -49,6 +59,7 @@ public class CreatNoteActivity extends BaseActivity {
     private Animation animation;
     private ImageView share;
     private ScrollView scorll;
+    private Dialog mCameraDialog;
 
     @Override
     public void doBusiness(Context mContext) {
@@ -159,15 +170,55 @@ public class CreatNoteActivity extends BaseActivity {
                     ToastUtils.showToast("请输入分享文本内容");
                     return;
                 }
-                showShare(content);
+                showShareDialog(content);
                 break;
             default:
                 break;
         }
     }
 
+    private void showShareDialog(final String content) {
+        mCameraDialog = new Dialog(this, R.style.my_dialog);
+        mCameraDialog.setCanceledOnTouchOutside(true);
+        LinearLayout root = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.item_share, null);
+        root.findViewById(R.id.qq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare(content, 1);
+                mCameraDialog.dismiss();
+            }
+        });
+        root.findViewById(R.id.wechat).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare(content, 2);
+                mCameraDialog.dismiss();
+            }
+        });
+        root.findViewById(R.id.wechat_monments).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare(content, 3);
+                mCameraDialog.dismiss();
+            }
+        });
+        mCameraDialog.setContentView(root);
+        Window dialogWindow = mCameraDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = -20; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT; // 高度
+        root.measure(0, 0);
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+        mCameraDialog.show();
 
-    private void showShare(String content) {
+    }
+
+
+    private void showShare(String content, int index) {
 //        ShareSDK.initSDK(mContext);
 //        OnekeyShare share = new OnekeyShare();
 //        share.disableSSOWhenAuthorize();
@@ -184,14 +235,32 @@ public class CreatNoteActivity extends BaseActivity {
         OnekeyShare oks = new OnekeyShare();
         // 关闭sso授权
         oks.disableSSOWhenAuthorize();
+        switch (index) {
+            case 1://qq
+                oks.setPlatform(QQ.NAME);
+                oks.setImagePath(fname);
+                break;
+            case 2://wechat
+                oks.setPlatform(Wechat.NAME);
+                oks.setText(content);
+                break;
+            case 3://wechat_monments
+                oks.setPlatform(SinaWeibo.NAME);
+                oks.setText(content);
+                break;
+            default:
+                break;
+        }
+//        oks.addHiddenPlatform(QQ.NAME);
         // 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
 //        oks.setTitle("我的学车历程");
         // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
 //        oks.setTitleUrl(linkurl);
         // text是分享文本，所有平台都需要这个字段
-//        oks.setText(content1);
+//        oks.setText(content);
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        oks.setImagePath(fname);//确保SDcard下面存在此张图片
+//        oks.setImagePath(fname);//确保SDcard下面存在此张图片
+
 //        oks.setImageUrl(imageurl);
         // url仅在微信（包括好友和朋友圈）中使用
 //        oks.setUrl(linkurl);
@@ -205,30 +274,6 @@ public class CreatNoteActivity extends BaseActivity {
         // 参考代码配置章节，设置分享参数
         oks.show(this);
 
-//        OnekeyShare oks = new OnekeyShare();
-//        //关闭sso授权
-//        oks.disableSSOWhenAuthorize();
-//        // title标题，印象笔记、邮箱、信息、微信、人人网、QQ和QQ空间使用
-////        oks.setTitle("标题");
-//        // titleUrl是标题的网络链接，仅在Linked-in,QQ和QQ空间使用
-////        oks.setTitleUrl("http://sharesdk.cn");
-//        // text是分享文本，所有平台都需要这个字段
-//        oks.setText(content);
-//        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
-//        oks.setImageUrl(fname);
-//        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-//        // url仅在微信（包括好友和朋友圈）中使用
-////        oks.setUrl("http://sharesdk.cn");
-//        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-////        oks.setComment("我是测试评论文本");
-//        // site是分享此内容的网站名称，仅在QQ空间使用
-////        oks.setSite("ShareSDK");
-//        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-////        oks.setSiteUrl("http://sharesdk.cn");
-//
-//// 启动分享GUI
-//        oks.show(this);
     }
 
 
